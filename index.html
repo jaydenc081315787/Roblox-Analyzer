@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Roblox Analyzer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    body {
+      background:#0f172a;
+      color:white;
+      text-align:center;
+      font-family:Arial;
+    }
+
+    input, button {
+      padding:10px;
+      margin:5px;
+      border-radius:10px;
+      border:none;
+    }
+
+    button { background:#22c55e; color:white; }
+
+    .card {
+      background:#1e293b;
+      padding:20px;
+      margin-top:20px;
+      border-radius:15px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Roblox Analyzer</h1>
+
+<input id="username" placeholder="Enter username">
+<br>
+<button onclick="check()">Analyze</button>
+
+<div id="result"></div>
+
+<script>
+async function check() {
+  let username = document.getElementById("username").value;
+  let result = document.getElementById("result");
+
+  result.innerHTML = "Loading...";
+
+  try {
+    let res = await fetch("https://proxy.cors.sh/https://users.roblox.com/v1/usernames/users", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({usernames:[username]})
+    });
+
+    let data = await res.json();
+    let user = data.data[0];
+
+    if(!user){
+      result.innerHTML="User not found";
+      return;
+    }
+
+    let id = user.id;
+
+    let avatar = await fetch(`https://proxy.cors.sh/https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${id}&size=150x150&format=Png`)
+    .then(r=>r.json());
+
+    let friends = await fetch(`https://proxy.cors.sh/https://friends.roblox.com/v1/users/${id}/friends/count`).then(r=>r.json());
+    let followers = await fetch(`https://proxy.cors.sh/https://friends.roblox.com/v1/users/${id}/followers/count`).then(r=>r.json());
+
+    let age = Math.floor((new Date() - new Date(user.created))/(1000*60*60*24));
+
+    let score = 0;
+    if(age < 30) score += 2;
+    if(friends.count < 5) score++;
+    if(followers.count < 5) score++;
+
+    let level = "Low";
+    if(score >= 3) level="Medium";
+    if(score >= 4) level="High";
+
+    result.innerHTML = `
+      <div class="card">
+        <img src="${avatar.data[0].imageUrl}">
+        <h2>${username}</h2>
+        <p>ID: ${id}</p>
+        <p>Age: ${age} days</p>
+        <p>Friends: ${friends.count}</p>
+        <p>Followers: ${followers.count}</p>
+        <h2>Suspicion: ${level}</h2>
+      </div>
+    `;
+  } catch {
+    result.innerHTML="Error";
+  }
+}
+</script>
+
+</body>
+</html>

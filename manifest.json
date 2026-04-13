@@ -1,0 +1,6 @@
+{
+  "name": "Roblox Analyzer",
+  "short_name": "Analyzer",
+  "start_url": "index.html",
+  "display": "standalone"
+}
