@@ -99,6 +99,57 @@ async function check() {
   }
 }
 </script>
+<script>
+async function check() {
+  const username = document.getElementById("username").value;
+  const result = document.getElementById("result");
 
+  if (!username) {
+    result.innerHTML = "Please enter a username";
+    return;
+  }
+
+  result.innerHTML = "Loading...";
+
+  try {
+    // Get user ID
+    const res = await fetch("https://users.roblox.com/v1/usernames/users", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({usernames:[username]})
+    });
+
+    const data = await res.json();
+    const user = data.data?.[0];
+
+    if (!user) {
+      result.innerHTML = "User not found";
+      return;
+    }
+
+    const id = user.id;
+
+    // Avatar (this usually works)
+    const avatar = `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${id}&size=150x150&format=Png`;
+
+    // Account age
+    const age = Math.floor((new Date() - new Date(user.created)) / (1000*60*60*24));
+
+    result.innerHTML = `
+      <div class="card">
+        <img src="${avatar}">
+        <h2>${user.name}</h2>
+        <p>ID: ${id}</p>
+        <p>Account Age: ${age} days</p>
+        <p>⚠️ Extra stats blocked by Roblox browser security</p>
+      </div>
+    `;
+
+  } catch (err) {
+    console.log(err);
+    result.innerHTML = "Error loading user (Roblox blocked request)";
+  }
+}
+</script>
 </body>
 </html>
