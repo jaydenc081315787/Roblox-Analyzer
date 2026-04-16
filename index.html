@@ -2,195 +2,134 @@
 <html>
 <head>
   <title>Roblox Analyzer</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <link rel="manifest" href="manifest.json">
 
   <style>
-body {
-  margin: 0;
-  font-family: monospace;
-  color: #e6f1ff;
-  background: #050814;
-  overflow-x: hidden;
-}
+    body {
+      margin: 0;
+      font-family: monospace;
+      background: var(--bg);
+      color: var(--text);
+      text-align: center;
+      transition: 0.3s;
+    }
 
-/* animated background */
-.bg {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at 20% 20%, #00ffd533, transparent),
-              radial-gradient(circle at 80% 70%, #ff004c33, transparent);
-  z-index: -1;
-  animation: move 10s infinite alternate;
-}
+    :root {
+      --bg: #050814;
+      --text: #e6f1ff;
+      --card: rgba(255,255,255,0.05);
+      --accent: #00ffd5;
+    }
 
-@keyframes move {
-  from { transform: scale(1); }
-  to { transform: scale(1.2); }
-}
+    body.light {
+      --bg: #f5f7ff;
+      --text: #111;
+      --card: white;
+      --accent: #2563eb;
+    }
 
-header {
-  padding: 18px;
-  font-size: 22px;
-  text-align: center;
-  color: #00ffd5;
-  text-shadow: 0 0 10px #00ffd5;
-}
+    header {
+      padding: 18px;
+      font-size: 22px;
+      color: var(--accent);
+    }
 
-input {
-  width: 80%;
-  padding: 12px;
-  margin-top: 10px;
-  border-radius: 10px;
-  border: none;
-  outline: none;
-}
+    button {
+      padding: 10px 15px;
+      margin: 5px;
+      border: none;
+      border-radius: 8px;
+      background: var(--accent);
+      cursor: pointer;
+    }
 
-button {
-  padding: 12px 20px;
-  margin-top: 10px;
-  border-radius: 10px;
-  border: none;
-  background: #00ffd5;
-  font-weight: bold;
-  cursor: pointer;
-}
+    input {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      width: 80%;
+    }
 
-.card {
-  margin: 20px;
-  padding: 20px;
-  border-radius: 15px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(0,255,213,0.2);
-}
+    .card {
+      margin: 20px;
+      padding: 20px;
+      background: var(--card);
+      border-radius: 12px;
+    }
 
-img {
-  width: 110px;
-  border-radius: 50%;
-}
+    img {
+      width: 100px;
+      border-radius: 50%;
+    }
 
-.bar {
-  width: 100%;
-  height: 12px;
-  background: #1a2238;
-  border-radius: 10px;
-  overflow: hidden;
-}
+    .bar {
+      height: 10px;
+      background: #222;
+      border-radius: 10px;
+      overflow: hidden;
+    }
 
-.fill {
-  height: 100%;
-  width: 0%;
-  transition: width 1s ease;
-  background: linear-gradient(90deg, #00ffd5, #ffcc00, #ff004c);
-}
+    .fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #00ffd5, orange, red);
+      transition: 1s;
+    }
 
-.history {
-  margin: 20px;
-  font-size: 12px;
-  opacity: 0.8;
-}
+    .history {
+      margin: 20px;
+    }
 
-.item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  margin: 5px 0;
-  border-radius: 8px;
-  background: rgba(0,255,213,0.05);
-  transition: 0.2s;
-}
+    .item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px;
+      background: rgba(0,255,213,0.05);
+      margin: 5px;
+      border-radius: 6px;
+    }
 
-.item span {
-  cursor: pointer;
-  flex: 1;
-}
+    .item span {
+      cursor: pointer;
+      flex: 1;
+    }
 
-.item button {
-  margin-left: 5px;
-  padding: 5px 8px;
-  border-radius: 6px;
-  font-size: 12px;
-  border: none;
-  cursor: pointer;
-  background: #00ffd5;
-  color: black;
-}
-.card {
-  animation: fadeIn 0.5s ease;
-}
+    .item button {
+      font-size: 10px;
+      padding: 3px 6px;
+    }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-button:hover {
-  transform: scale(1.05);
-  transition: 0.2s;
-}
-.nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: #0b1220;
-  display: flex;
-  justify-content: space-around;
-  padding: 10px;
-  border-top: 1px solid #00ffd533;
-}
-
-.nav button {
-  background: none;
-  color: #00ffd5;
-  font-size: 14px;
-}
-:root {
-  --bg: #050814;
-  --card: rgba(255,255,255,0.04);
-  --text: #e6f1ff;
-  --accent: #00ffd5;
-}
-
-body.light {
-  --bg: #f5f7ff;
-  --card: white;
-  --text: #111827;
-  --accent: #2563eb;
-}
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  transition: 0.3s;
-}
-
-.card {
-  background: var(--card);
-  transition: 0.3s;
-}
-
-button {
-  background: var(--accent);
-  color: black;
-}
-</style>
+    .nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: var(--bg);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px;
+    }
+  </style>
 </head>
 
-<body><div class="bg"></div>
+<body>
 
-<h1>Roblox Analyzer</h1>
+<header>Roblox Analyzer</header>
 
 <button onclick="toggleTheme()">🌙 / ☀️ Theme</button>
 
-<input id="username" placeholder="Enter username">
+<br><br>
+
+<input id="username" placeholder="Enter Roblox username">
+<br>
 <button onclick="check()">Analyze</button>
 
-<div class="history" id="history"></div>
 <div id="result"></div>
+
+<div class="history" id="history"></div>
+
+<div class="nav">
+  <button onclick="window.scrollTo(0,0)">🏠</button>
+  <button onclick="document.getElementById('history').scrollIntoView()">🔎</button>
+</div>
 
 <script>
 let history = JSON.parse(localStorage.getItem("history") || "[]");
@@ -201,41 +140,41 @@ function saveHistory(name) {
   localStorage.setItem("history", JSON.stringify(history));
   renderHistory();
 }
-// 🗑 delete history item
-function deleteItem(index) {
-  history.splice(index, 1);
-  localStorage.setItem("history", JSON.stringify(history));
-  renderHistory();
-}
 
-// 📌 pin item
-function pinItem(index) {
-  const item = history[index];
-
-  if (!pinned.includes(item)) {
-    pinned.push(item);
-  }
-
-  localStorage.setItem("pinned", JSON.stringify(pinned));
-  alert("Pinned: " + item);
-}
 function renderHistory() {
   const box = document.getElementById("history");
-  if (!box) return;
-
   box.innerHTML = history.map((h, i) => `
     <div class="item">
       <span onclick="searchFromHistory('${h}')">🔎 ${h}</span>
-
-      <button onclick="pinItem(${i})">📌</button>
       <button onclick="deleteItem(${i})">🗑</button>
     </div>
   `).join("");
 }
-renderHistory();
+
+function deleteItem(i) {
+  history.splice(i, 1);
+  localStorage.setItem("history", JSON.stringify(history));
+  renderHistory();
+}
+
+function searchFromHistory(name) {
+  document.getElementById("username").value = name;
+  check();
+}
+
+function toggleTheme() {
+  document.body.classList.toggle("light");
+  localStorage.setItem("theme", document.body.classList.contains("light") ? "light" : "dark");
+}
+
+window.onload = () => {
+  renderHistory();
+  if (localStorage.getItem("theme") === "light") {
+    document.body.classList.add("light");
+  }
+};
 
 async function check() {
-playClick();
   const username = document.getElementById("username").value;
   const result = document.getElementById("result");
 
@@ -243,7 +182,7 @@ playClick();
 
   saveHistory(username);
 
-  result.innerHTML = "<div class='card'>Scanning...</div>";
+  result.innerHTML = "<div class='card'>Loading...</div>";
 
   try {
     const res = await fetch("https://api.allorigins.win/raw?url=https://users.roblox.com/v1/usernames/users", {
@@ -262,19 +201,14 @@ playClick();
 
     const id = user.id;
     const age = Math.floor((new Date() - new Date(user.created)) / (1000*60*60*24));
-
     const avatar = `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${id}&size=150x150&format=Png`;
 
     let percent = age < 30 ? 70 : 30;
-let summary = "Normal account behavior detected.";
 
-if (age < 30) {
-  summary = "New account with limited activity history.";
-}
+    let summary = "Normal account behavior.";
+    if (age < 30) summary = "New account.";
+    if (age < 10) summary = "Very new account.";
 
-if (age < 10) {
-  summary = "Very new account — minimal data available.";
-}
     result.innerHTML = `
       <div class="card">
         <img src="${avatar}">
@@ -282,48 +216,24 @@ if (age < 10) {
         <p>ID: ${id}</p>
         <p>Age: ${age} days</p>
 
-        <p>👥 Friends: Not available</p>
-        <p>⭐ Followers: Not available</p>
-
         <div class="bar">
           <div class="fill" id="fill"></div>
         </div>
 
         <p>${percent}% profile score</p>
+        <p>🧠 ${summary}</p>
       </div>
     `;
 
     setTimeout(() => {
       document.getElementById("fill").style.width = percent + "%";
-    }, 300);
+    }, 200);
 
   } catch (e) {
-    result.innerHTML = "<div class='card'>Error loading profile</div>";<p class="ai">🧠 AI Summary: ${summary}</p>
+    result.innerHTML = "<div class='card'>Error loading</div>";
   }
 }
-function toggleTheme() {
-  document.body.classList.toggle("light");
-
-  let mode = document.body.classList.contains("light") ? "light" : "dark";
-  localStorage.setItem("theme", mode);
-}
-
-// load saved theme
-window.onload = () => {
-  if (localStorage.getItem("theme") === "light") {
-    document.body.classList.add("light");
-  }
-};
 </script>
+
 </body>
-<div class="nav">
-  <button onclick="window.scrollTo(0,0)">🏠 Home</button>
-  <button onclick="document.getElementById('history').scrollIntoView()">🔎 History</button>
-  <button onclick="alert('Roblox Analyzer v2')">ℹ️ Info</button>
-</div>
 </html>
-function playClick() {
-  const audio = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
-  audio.volume = 0.3;
-  audio.play();
-}
